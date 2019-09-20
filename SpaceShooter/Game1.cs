@@ -12,6 +12,10 @@ namespace SpaceShooter
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
+        //mina variabler
+        Texture2D ship_texture; //rymdskeppets grafik
+        Vector2 ship_vector; //rymdskeppets position
+
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -27,6 +31,8 @@ namespace SpaceShooter
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
+            ship_vector.X = 380;
+            ship_vector.Y = 400;
 
             base.Initialize();
         }
@@ -41,6 +47,8 @@ namespace SpaceShooter
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
+            ship_texture = this.Content.Load<Texture2D>("Sprites/ship");
+
         }
 
         /// <summary>
@@ -76,6 +84,9 @@ namespace SpaceShooter
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // TODO: Add your drawing code here
+            spriteBatch.Begin();
+            spriteBatch.Draw(ship_texture, ship_vector, Color.White);
+            spriteBatch.End();
 
             base.Draw(gameTime);
         }
