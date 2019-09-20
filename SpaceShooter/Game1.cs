@@ -5,7 +5,11 @@ using Microsoft.Xna.Framework.Input;
 namespace SpaceShooter
 {
     /// <summary>
-    /// This is the main type for your game.
+    /// 
+    /// Tobias version av bokens exempel.
+    /// 
+    /// Höstterminen 2019
+    /// 
     /// </summary>
     public class Game1 : Game
     {
