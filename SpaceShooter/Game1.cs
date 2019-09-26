@@ -19,6 +19,8 @@ namespace SpaceShooter
         //mina variabler
         Texture2D ship_texture; //rymdskeppets grafik
         Vector2 ship_vector; //rymdskeppets position
+        Vector2 ship_speed; //rymdskeppets hastighet
+
 
         public Game1()
         {
@@ -35,8 +37,11 @@ namespace SpaceShooter
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-            ship_vector.X = 380;
-            ship_vector.Y = 400;
+            //skeppets startposition
+            ship_vector = new Vector2(380, 400);
+
+            //skeppets starthastighet
+            ship_speed = new Vector2(1.5f, 1.5f);
 
             base.Initialize();
         }
@@ -76,6 +81,43 @@ namespace SpaceShooter
 
             // TODO: Add your update logic here
 
+            //Tangentbordsstyrning
+            KeyboardState keyboardState = Keyboard.GetState();
+
+            if (keyboardState.IsKeyDown(Keys.Right) || keyboardState.IsKeyDown(Keys.D))
+            {
+                ship_vector.X += ship_speed.X;
+            }
+            if (keyboardState.IsKeyDown(Keys.Left) || keyboardState.IsKeyDown(Keys.A))
+            {
+                ship_vector.X -= ship_speed.X;
+            }
+            if (keyboardState.IsKeyDown(Keys.Down) || keyboardState.IsKeyDown(Keys.S))
+            {
+                ship_vector.Y += ship_speed.Y;
+            }
+            if (keyboardState.IsKeyDown(Keys.Up) || keyboardState.IsKeyDown(Keys.W))
+            {
+                ship_vector.Y -= ship_speed.Y;
+            }
+
+            /*
+            //skeppets förflyttning
+            ship_vector.X += ship_speed.X;
+
+            //förhindra skeppet att åka utanför sidkanterna
+            if (ship_vector.X < 0 || ship_vector.X >Window.ClientBounds.Width - ship_texture.Width)
+            {
+                ship_speed.X = ship_speed.X * -1;
+            }
+
+            ship_vector.Y += ship_speed.Y;
+            //förhindra skeppet att åka utanför över- och underkanterna
+            if (ship_vector.Y < 0 || ship_vector.Y > Window.ClientBounds.Height-ship_texture.Height)
+            {
+                ship_speed.Y = ship_speed.Y * -1;
+            }
+            */
             base.Update(gameTime);
         }
 
@@ -85,11 +127,14 @@ namespace SpaceShooter
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(Color.Black);
 
             // TODO: Add your drawing code here
+            
             spriteBatch.Begin();
+
             spriteBatch.Draw(ship_texture, ship_vector, Color.White);
+
             spriteBatch.End();
 
             base.Draw(gameTime);
