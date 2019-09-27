@@ -84,23 +84,35 @@ namespace SpaceShooter
             //Tangentbordsstyrning
             KeyboardState keyboardState = Keyboard.GetState();
 
-            if (keyboardState.IsKeyDown(Keys.Right) || keyboardState.IsKeyDown(Keys.D))
+            //Förflyttning i x-led
+            if(ship_vector.X <= Window.ClientBounds.Width-ship_texture.Width && ship_vector.X >= 0)
             {
-                ship_vector.X += ship_speed.X;
+                if (keyboardState.IsKeyDown(Keys.Right) || keyboardState.IsKeyDown(Keys.D))
+                {
+                    ship_vector.X += ship_speed.X;
+                }
+                if (keyboardState.IsKeyDown(Keys.Left) || keyboardState.IsKeyDown(Keys.A))
+                {
+                    ship_vector.X -= ship_speed.X;
+                }
             }
-            if (keyboardState.IsKeyDown(Keys.Left) || keyboardState.IsKeyDown(Keys.A))
+            //Förflyttning i y-led
+            if (ship_vector.Y <= Window.ClientBounds.Height - ship_texture.Height && ship_vector.Y >= 0)
             {
-                ship_vector.X -= ship_speed.X;
-            }
-            if (keyboardState.IsKeyDown(Keys.Down) || keyboardState.IsKeyDown(Keys.S))
-            {
-                ship_vector.Y += ship_speed.Y;
-            }
-            if (keyboardState.IsKeyDown(Keys.Up) || keyboardState.IsKeyDown(Keys.W))
-            {
-                ship_vector.Y -= ship_speed.Y;
+                if (keyboardState.IsKeyDown(Keys.Down) || keyboardState.IsKeyDown(Keys.S))
+                {
+                    ship_vector.Y += ship_speed.Y;
+                }
+                if (keyboardState.IsKeyDown(Keys.Up) || keyboardState.IsKeyDown(Keys.W))
+                {
+                    ship_vector.Y -= ship_speed.Y;
+                }
             }
 
+            if (ship_vector.X < 0)
+                ship_vector.X = 0;
+            if (ship_vector.X > Window.ClientBounds.Width - ship_texture.Width)
+                ship_vector.X = Window.ClientBounds.Width - ship_texture.Width;
             /*
             //skeppets förflyttning
             ship_vector.X += ship_speed.X;
