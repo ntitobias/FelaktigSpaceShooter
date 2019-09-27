@@ -41,7 +41,7 @@ namespace SpaceShooter
             ship_vector = new Vector2(380, 400);
 
             //skeppets starthastighet
-            ship_speed = new Vector2(1.5f, 1.5f);
+            ship_speed = new Vector2(6.5f, 6.5f);
 
             base.Initialize();
         }
@@ -109,10 +109,13 @@ namespace SpaceShooter
                 }
             }
 
-            if (ship_vector.X < 0)
-                ship_vector.X = 0;
+            //Flytta tillbaka rymdskeppet om det hamnar utanför bildskärmen
+            if (ship_vector.X < 0) ship_vector.X = 0;
             if (ship_vector.X > Window.ClientBounds.Width - ship_texture.Width)
                 ship_vector.X = Window.ClientBounds.Width - ship_texture.Width;
+            if (ship_vector.Y < 0) ship_vector.Y = 0;
+            if (ship_vector.Y > Window.ClientBounds.Height - ship_texture.Height)
+                ship_vector.Y = Window.ClientBounds.Height - ship_texture.Height;
             /*
             //skeppets förflyttning
             ship_vector.X += ship_speed.X;
