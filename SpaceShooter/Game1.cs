@@ -17,6 +17,8 @@ namespace SpaceShooter
         SpriteBatch spriteBatch;
 
         //mina variabler
+        Player player;
+
         Texture2D ship_texture; //rymdskeppets grafik
         Vector2 ship_vector; //rymdskeppets position
         Vector2 ship_speed; //rymdskeppets hastighet
@@ -57,7 +59,7 @@ namespace SpaceShooter
 
             // TODO: use this.Content to load your game content here
             ship_texture = this.Content.Load<Texture2D>("Sprites/ship");
-
+            player = new Player(this.Content.Load<Texture2D>("Sprites/ship"), 380, 400, 2.5f, 4.5f);
         }
 
         /// <summary>
@@ -81,41 +83,7 @@ namespace SpaceShooter
 
             // TODO: Add your update logic here
 
-            //Tangentbordsstyrning
-            KeyboardState keyboardState = Keyboard.GetState();
 
-            //Förflyttning i x-led
-            if(ship_vector.X <= Window.ClientBounds.Width-ship_texture.Width && ship_vector.X >= 0)
-            {
-                if (keyboardState.IsKeyDown(Keys.Right) || keyboardState.IsKeyDown(Keys.D))
-                {
-                    ship_vector.X += ship_speed.X;
-                }
-                if (keyboardState.IsKeyDown(Keys.Left) || keyboardState.IsKeyDown(Keys.A))
-                {
-                    ship_vector.X -= ship_speed.X;
-                }
-            }
-            //Förflyttning i y-led
-            if (ship_vector.Y <= Window.ClientBounds.Height - ship_texture.Height && ship_vector.Y >= 0)
-            {
-                if (keyboardState.IsKeyDown(Keys.Down) || keyboardState.IsKeyDown(Keys.S))
-                {
-                    ship_vector.Y += ship_speed.Y;
-                }
-                if (keyboardState.IsKeyDown(Keys.Up) || keyboardState.IsKeyDown(Keys.W))
-                {
-                    ship_vector.Y -= ship_speed.Y;
-                }
-            }
-
-            //Flytta tillbaka rymdskeppet om det hamnar utanför bildskärmen
-            if (ship_vector.X < 0) ship_vector.X = 0;
-            if (ship_vector.X > Window.ClientBounds.Width - ship_texture.Width)
-                ship_vector.X = Window.ClientBounds.Width - ship_texture.Width;
-            if (ship_vector.Y < 0) ship_vector.Y = 0;
-            if (ship_vector.Y > Window.ClientBounds.Height - ship_texture.Height)
-                ship_vector.Y = Window.ClientBounds.Height - ship_texture.Height;
             /*
             //skeppets förflyttning
             ship_vector.X += ship_speed.X;
@@ -148,7 +116,7 @@ namespace SpaceShooter
             
             spriteBatch.Begin();
 
-            spriteBatch.Draw(ship_texture, ship_vector, Color.White);
+            player.Draw(spriteBatch);
 
             spriteBatch.End();
 
