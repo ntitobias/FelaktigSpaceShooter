@@ -6,18 +6,13 @@ namespace SpaceShooter
 {
     //Står på sid 59 i boken
 
-    class Player
+    class Player:MovingObject
     {
-        Texture2D gfx;
-        Vector2 position;
-        Vector2 speed;
+        int points = 0;
 
-        public Player(Texture2D texture, float X, float Y, float speedX, float speedY)
+        public Player(Texture2D texture, float X, float Y, float speedX, float speedY):base(texture, X, Y, speedX, speedY)
         {
-            this.gfx = texture;
-            this.position.X = X;
-            this.position.Y = Y;
-
+            
         }
 
         public void Update(GameWindow window)
@@ -59,10 +54,7 @@ namespace SpaceShooter
                 position.Y = window.ClientBounds.Height - gfx.Height;
         }
 
-        public void Draw(SpriteBatch spriteBatch)
-        {
-            spriteBatch.Draw(gfx, position, Color.White);
-        }
+       
 
     }
 }

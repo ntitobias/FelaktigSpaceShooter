@@ -18,11 +18,7 @@ namespace SpaceShooter
 
         //mina variabler
         Player player;
-
-        Texture2D ship_texture; //rymdskeppets grafik
-        Vector2 ship_vector; //rymdskeppets position
-        Vector2 ship_speed; //rymdskeppets hastighet
-
+        PrintText printText;
 
         public Game1()
         {
@@ -39,12 +35,7 @@ namespace SpaceShooter
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-            //skeppets startposition
-            ship_vector = new Vector2(380, 400);
-
-            //skeppets starthastighet
-            ship_speed = new Vector2(6.5f, 6.5f);
-
+ 
             base.Initialize();
         }
 
@@ -58,8 +49,8 @@ namespace SpaceShooter
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
-            ship_texture = this.Content.Load<Texture2D>("Sprites/ship");
             player = new Player(this.Content.Load<Texture2D>("Sprites/ship"), 380, 400, 2.5f, 4.5f);
+            printText = new PrintText(Content.Load<SpriteFont>("myFont"));
         }
 
         /// <summary>
@@ -82,25 +73,8 @@ namespace SpaceShooter
                 Exit();
 
             // TODO: Add your update logic here
+            player.Update(Window);
 
-
-            /*
-            //skeppets förflyttning
-            ship_vector.X += ship_speed.X;
-
-            //förhindra skeppet att åka utanför sidkanterna
-            if (ship_vector.X < 0 || ship_vector.X >Window.ClientBounds.Width - ship_texture.Width)
-            {
-                ship_speed.X = ship_speed.X * -1;
-            }
-
-            ship_vector.Y += ship_speed.Y;
-            //förhindra skeppet att åka utanför över- och underkanterna
-            if (ship_vector.Y < 0 || ship_vector.Y > Window.ClientBounds.Height-ship_texture.Height)
-            {
-                ship_speed.Y = ship_speed.Y * -1;
-            }
-            */
             base.Update(gameTime);
         }
 
@@ -118,6 +92,7 @@ namespace SpaceShooter
 
             player.Draw(spriteBatch);
 
+            printText.Print("testutskrift", spriteBatch, 0, 0);
             spriteBatch.End();
 
             base.Draw(gameTime);
