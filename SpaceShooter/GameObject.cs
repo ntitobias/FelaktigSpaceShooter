@@ -32,7 +32,8 @@ namespace SpaceShooter
     abstract class MovingObject : GameObject
     {
         protected Vector2 speed;
-        public MovingObject(Texture2D gfx, float X, float Y, float speedX, float speedY) : base(gfx, X, Y)
+        public MovingObject(Texture2D gfx, float X, float Y, float speedX, float speedY) 
+            : base(gfx, X, Y)
         {
             this.speed = new Vector2(speedX, speedY);
         }

@@ -4,13 +4,12 @@ using Microsoft.Xna.Framework.Input;
 
 namespace SpaceShooter
 {
-    //Står på sid 59 i boken
-
     class Player:MovingObject
     {
         int points = 0;
 
-        public Player(Texture2D texture, float X, float Y, float speedX, float speedY):base(texture, X, Y, speedX, speedY)
+        public Player(Texture2D texture, float X, float Y, float speedX, float speedY)
+            :base(texture, X, Y, speedX, speedY)
         {
             
         }
