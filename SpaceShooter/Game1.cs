@@ -1,6 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace SpaceShooter
 {
@@ -19,6 +22,8 @@ namespace SpaceShooter
         //mina variabler
         Player player;
         PrintText printText;
+        Enemy enemy;
+        List<Enemy> enemies;
 
         public Game1()
         {
@@ -51,6 +56,20 @@ namespace SpaceShooter
             // TODO: use this.Content to load your game content here
             player = new Player(this.Content.Load<Texture2D>("Sprites/ship"), 380, 400, 2.5f, 4.5f);
             printText = new PrintText(Content.Load<SpriteFont>("myFont"));
+
+            //Skapa fiender
+            enemies = new List<Enemy>();
+            Random random = new Random();
+            Texture2D tmpSprite= this.Content.Load<Texture2D>("Sprites/mine");
+            for (int i = 0; i < 10; i++)
+            {
+                int rndX = random.Next(0, Window.ClientBounds.Width - tmpSprite.Width);
+                int rndY = random.Next(0, Window.ClientBounds.Height/2);
+
+                Enemy temp = new Enemy(tmpSprite, rndX, rndY);
+                enemies.Add(temp);
+            }
+
         }
 
         /// <summary>
@@ -75,6 +94,14 @@ namespace SpaceShooter
             // TODO: Add your update logic here
             player.Update(Window);
 
+            //Gå igenom alla fiender
+            foreach (Enemy e in enemies.ToList())
+            {
+                if (e.IsAlive)  //Kontrollera om fienden lever
+                    e.Update(Window);   //Flytta på den
+                else //Ta bort fienden för den är död
+                    enemies.Remove(e);
+            }
             base.Update(gameTime);
         }
 
@@ -92,7 +119,11 @@ namespace SpaceShooter
 
             player.Draw(spriteBatch);
 
-            printText.Print("testutskrift", spriteBatch, 0, 0);
+            foreach(Enemy e in enemies)
+                e.Draw(spriteBatch);
+
+            printText.Print("antal fiender:" + enemies.Count, spriteBatch, 0, 0);
+
             spriteBatch.End();
 
             base.Draw(gameTime);
