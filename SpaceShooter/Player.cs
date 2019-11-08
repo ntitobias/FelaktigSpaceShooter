@@ -4,7 +4,7 @@ using Microsoft.Xna.Framework.Input;
 
 namespace SpaceShooter
 {
-    class Player:MovingObject
+    class Player:PhysicalObject
     {
         int points = 0;
 

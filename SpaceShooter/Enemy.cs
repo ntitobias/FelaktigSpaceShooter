@@ -4,9 +4,8 @@ using Microsoft.Xna.Framework.Input;
 
 namespace SpaceShooter
 {
-    class Enemy: MovingObject
+    class Enemy: PhysicalObject
     {
-        bool isAlive = true;
 
         public Enemy(Texture2D texture, float X, float Y)
             : base(texture, X, Y, 6f, 0.3f)
@@ -27,11 +26,10 @@ namespace SpaceShooter
             //Gör fienden inaktiv om den åker ut där nere
             if (position.Y > window.ClientBounds.Height)
             {
-                isAlive = false;
+                IsAlive = false;
             }
         }
 
-        public bool IsAlive { get => isAlive; set => isAlive = value; }
 
     }
 }
