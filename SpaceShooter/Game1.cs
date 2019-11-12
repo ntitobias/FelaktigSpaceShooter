@@ -23,6 +23,8 @@ namespace SpaceShooter
         Player player;
         PrintText printText;
         List<Enemy> enemies;
+        List<GoldCoin> goldCoins;
+        Texture2D goldCoinSprite;
 
         public Game1()
         {
@@ -39,7 +41,8 @@ namespace SpaceShooter
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
- 
+            goldCoins = new List<GoldCoin>();
+
             base.Initialize();
         }
 
@@ -55,6 +58,7 @@ namespace SpaceShooter
             // TODO: use this.Content to load your game content here
             player = new Player(this.Content.Load<Texture2D>("Sprites/ship"), 380, 400, 2.5f, 4.5f);
             printText = new PrintText(Content.Load<SpriteFont>("myFont"));
+            goldCoinSprite = Content.Load<Texture2D>("Sprites/coin");
 
             //Skapa fiender
             enemies = new List<Enemy>();
@@ -105,6 +109,41 @@ namespace SpaceShooter
                 else //Ta bort fienden för den är död
                     enemies.Remove(e);
             }
+
+            //Guldmynten ska uppstå slumpmässigt, en chans på 200.
+            Random random = new Random();
+            int newCoin = random.Next(1, 200);
+            if(newCoin == 1) // ok, nytt guldmynt ska uppstå
+            {
+                // Var ska guldmyntet uppstå?
+                int rndX = random.Next(0, Window.ClientBounds.Width - goldCoinSprite.Width);
+                int rndY = random.Next(0, Window.ClientBounds.Height - goldCoinSprite.Height);
+                // Lägg till myntet i listan
+                goldCoins.Add(new GoldCoin(goldCoinSprite, rndX, rndY, gameTime));
+            }
+
+            //Gå igenom listan med existerande guldmynt
+            foreach(GoldCoin gc in goldCoins.ToList())
+            {
+                if (gc.IsAlive)
+                {
+                    //Kollar om guldmyntet har blivit för gammalt för att leva vidare
+                    gc.Update(gameTime);
+
+                    //Kontrollera om de kolliderat med spelaren
+                    if (gc.CheckCollision(player))
+                    {
+                        //Ta bort myntet vid kollision
+                        goldCoins.Remove(gc);
+                        //Ge spelaren poäng
+                        player.Points++;
+                    }
+                }
+                else
+                    //Ta bort guldmyntet för det är dött
+                    goldCoins.Remove(gc);
+            }
+
             base.Update(gameTime);
         }
 
@@ -120,12 +159,23 @@ namespace SpaceShooter
             
             spriteBatch.Begin();
 
+            //Rita guldmynt
+            foreach (GoldCoin gc in goldCoins)
+                gc.Draw(spriteBatch);
+
+            //Rita spelaren
             player.Draw(spriteBatch);
 
+            //Rita fiendena
             foreach(Enemy e in enemies)
                 e.Draw(spriteBatch);
 
-            printText.Print("antal fiender:" + enemies.Count, spriteBatch, 0, 0);
+            // Rita texter
+            // För att kunna skriva svenska tecken (åäöÅÄÖ) behöver man ändra lite i
+            // XML-filen som hänger ihop med din font. Leta efter taggen <END>.
+            // Ändra där värdet till exempelvis 256.
+            printText.Print("Poäng:" + player.Points, spriteBatch, 0, 0);
+            printText.Print("antal fiender:" + enemies.Count, spriteBatch, 0, 20);
 
             spriteBatch.End();
 

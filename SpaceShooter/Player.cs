@@ -14,6 +14,8 @@ namespace SpaceShooter
             
         }
 
+        public int Points { get { return points; } set { points = value; } }
+
         public void Update(GameWindow window)
         {
             //Tangentbordsstyrning
