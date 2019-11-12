@@ -22,7 +22,6 @@ namespace SpaceShooter
         //mina variabler
         Player player;
         PrintText printText;
-        Enemy enemy;
         List<Enemy> enemies;
 
         public Game1()
@@ -98,7 +97,11 @@ namespace SpaceShooter
             foreach (Enemy e in enemies.ToList())
             {
                 if (e.IsAlive)  //Kontrollera om fienden lever
+                {   //Kontrollera kollision med spelaren
+                    if (e.CheckCollision(player))
+                        Exit();
                     e.Update(Window);   //Flytta på den
+                }
                 else //Ta bort fienden för den är död
                     enemies.Remove(e);
             }
