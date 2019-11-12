@@ -69,7 +69,18 @@ namespace SpaceShooter
                 int rndX = random.Next(0, Window.ClientBounds.Width - tmpSprite.Width);
                 int rndY = random.Next(0, Window.ClientBounds.Height/2);
 
-                Enemy temp = new Enemy(tmpSprite, rndX, rndY);
+                Mine temp = new Mine(tmpSprite, rndX, -rndY);
+                enemies.Add(temp);
+            }
+
+            //Tripoder
+            tmpSprite = this.Content.Load<Texture2D>("Sprites/tripod");
+            for (int i = 0; i < 10; i++)
+            {
+                int rndX = random.Next(0, Window.ClientBounds.Width - tmpSprite.Width);
+                int rndY = random.Next(0, Window.ClientBounds.Height / 2);
+
+                Tripod temp = new Tripod(tmpSprite, rndX, -rndY);
                 enemies.Add(temp);
             }
 
@@ -175,7 +186,7 @@ namespace SpaceShooter
             // XML-filen som hänger ihop med din font. Leta efter taggen <END>.
             // Ändra där värdet till exempelvis 256.
             printText.Print("Poäng:" + player.Points, spriteBatch, 0, 0);
-            printText.Print("antal fiender:" + enemies.Count, spriteBatch, 0, 20);
+            printText.Print("Antal fiender:" + enemies.Count, spriteBatch, 0, 20);
 
             spriteBatch.End();
 
