@@ -60,7 +60,7 @@ namespace SpaceShooter
             player = new Player(this.Content.Load<Texture2D>("Sprites/ship"), 
                 380, 400, 2.5f, 4.5f, this.Content.Load<Texture2D>("Sprites/bullet"));
             printText = new PrintText(Content.Load<SpriteFont>("myFont"));
-            goldCoinSprite = Content.Load<Texture2D>("Sprites/coin");
+            goldCoinSprite = Content.Load<Texture2D>("coin");
 
             //Skapa fiender
             enemies = new List<Enemy>();
@@ -82,6 +82,7 @@ namespace SpaceShooter
                 enemies.Add(temp);
             }
 
+            /*
             //Tripoder
             tmpSprite = this.Content.Load<Texture2D>("Sprites/tripod");
             for (int i = 0; i < enemiesCount; i++)
@@ -92,6 +93,7 @@ namespace SpaceShooter
                 Tripod temp = new Tripod(tmpSprite, rndX, -rndY);
                 enemies.Add(temp);
             }
+            */
         }
 
         /// <summary>
@@ -142,7 +144,7 @@ namespace SpaceShooter
 
             //Guldmynten ska uppstå slumpmässigt, en chans på 200.
             Random random = new Random();
-            int newCoin = random.Next(1, 200);
+            int newCoin = random.Next(1, 2000);
             if(newCoin == 1) // ok, nytt guldmynt ska uppstå
             {
                 // Var ska guldmyntet uppstå?
@@ -166,7 +168,7 @@ namespace SpaceShooter
                         //Ta bort myntet vid kollision
                         goldCoins.Remove(gc);
                         //Ge spelaren poäng
-                        player.Points++;
+                        player.Points+=100;
                     }
                 }
                 else
@@ -196,9 +198,6 @@ namespace SpaceShooter
 
             spriteBatch.Begin();
 
-            //Rita guldmynt
-            foreach (GoldCoin gc in goldCoins)
-                gc.Draw(spriteBatch);
 
             //Rita spelaren
             player.Draw(spriteBatch);
@@ -215,6 +214,10 @@ namespace SpaceShooter
             printText.Print("Antal fiender:" + enemies.Count, spriteBatch, 0, 20);
 
             spriteBatch.End();
+
+            //Rita guldmynt
+            foreach (GoldCoin gc in goldCoins)
+                gc.Draw(spriteBatch);
 
             base.Draw(gameTime);
         }

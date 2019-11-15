@@ -64,7 +64,7 @@ namespace SpaceShooter
                 position.Y = window.ClientBounds.Height - gfx.Height;
 
             //Spelaren vill skjuta
-            if (keyboardState.IsKeyDown(Keys.Space))
+            if (keyboardState.IsKeyDown(Keys.P))
             {
                 //Kontrollera om spelaren får skjuta
                 if (gameTime.TotalGameTime.TotalMilliseconds > 
@@ -75,7 +75,7 @@ namespace SpaceShooter
                         position.X + gfx.Width / 2, position.Y);
                     bullets.Add(temp);
                     //Sätt timeSinceLastBullet till detta ögonblick
-                    timeSinceLastBullet = gameTime.TotalGameTime.TotalMilliseconds;
+                    timeSinceLastBullet = gameTime.TotalGameTime.Milliseconds;
                 }
             }
 
@@ -108,7 +108,7 @@ namespace SpaceShooter
 
         public void Update()
         {
-            position.Y -= speed.Y;
+            position.Y += speed.Y;
             if (position.Y < 0)
                 IsAlive = false;
         }

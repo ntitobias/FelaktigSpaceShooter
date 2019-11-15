@@ -4,8 +4,8 @@ using Microsoft.Xna.Framework.Input;
 
 namespace SpaceShooter
 {
-    abstract class Enemy: PhysicalObject
-    {
+    abstract class Enemy : PhysicalObject
+    { 
         public Enemy(Texture2D texture, float X, float Y, float speedX, float speedY)
             : base(texture, X, Y, speedX, speedY)
         {
@@ -17,7 +17,7 @@ namespace SpaceShooter
     class Mine : Enemy
     {
         public Mine(Texture2D texture, float X, float Y)
-            : base(texture, X, Y, 6f, 1f)
+            : base(texture, X, Y, 16f, 1f)
         {
         }
 
@@ -39,13 +39,13 @@ namespace SpaceShooter
         }
     }
 
-    class Tripod : Enemy
+    class Tripod : PhysicalObject
     {
         public Tripod(Texture2D texture, float X, float Y) 
-            : base(texture, X, Y, 0f, 3f)
+            : base(texture, X, Y, 0f, 30f)
         {
         }
-        public override void Update(GameWindow window)
+        public void Update(GameWindow window)
         {
             //Flytta på fienden
             position.Y += speed.Y;

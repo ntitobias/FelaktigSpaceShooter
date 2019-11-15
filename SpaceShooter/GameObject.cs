@@ -17,7 +17,7 @@ namespace SpaceShooter
             this.position.Y = Y;
         }
 
-        public virtual void Draw(SpriteBatch spriteBatch)
+        public virtual void Draw(SpriteBatch spriteBatch);
         {
             spriteBatch.Draw(gfx, position, Color.White);
         }
@@ -26,8 +26,6 @@ namespace SpaceShooter
         public float Y { get { return position.Y; } }
         public float Width { get { return gfx.Width; } }
         public float Height { get { return gfx.Height; } }
-
-
     }
 
     abstract class MovingObject : GameObject
@@ -36,7 +34,7 @@ namespace SpaceShooter
         public MovingObject(Texture2D gfx, float X, float Y, float speedX, float speedY) 
             : base(gfx, X, Y)
         {
-            this.speed = new Vector2(speedX, speedY);
+            this.speed = new Vector2(speedY, speedY);
         }
     }
 
