@@ -1,6 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace SpaceShooter
 {
@@ -8,15 +10,22 @@ namespace SpaceShooter
     {
         int points = 0;
 
-        public Player(Texture2D texture, float X, float Y, float speedX, float speedY)
-            :base(texture, X, Y, speedX, speedY)
+        List<Bullet> bullets;
+        Texture2D bulletGfx;
+        double timeSinceLastBullet;
+
+        public Player(Texture2D gfx, float X, float Y, float speedX, float speedY, Texture2D bulletGfx)
+            :base(gfx, X, Y, speedX, speedY)
         {
-            
+            bullets = new List<Bullet>();
+            this.bulletGfx = bulletGfx;
+            timeSinceLastBullet = 0;
         }
 
         public int Points { get { return points; } set { points = value; } }
+        public List<Bullet> Bullets { get { return bullets; } }
 
-        public void Update(GameWindow window)
+        public void Update(GameWindow window, GameTime gameTime)
         {
             //Tangentbordsstyrning
             KeyboardState keyboardState = Keyboard.GetState();
@@ -53,9 +62,55 @@ namespace SpaceShooter
             if (position.Y < 0) position.Y = 0;
             if (position.Y > window.ClientBounds.Height - gfx.Height)
                 position.Y = window.ClientBounds.Height - gfx.Height;
+
+            //Spelaren vill skjuta
+            if (keyboardState.IsKeyDown(Keys.Space))
+            {
+                //Kontrollera om spelaren får skjuta
+                if (gameTime.TotalGameTime.TotalMilliseconds > 
+                    timeSinceLastBullet + 200)
+                {
+                    //Skapa skottet
+                    Bullet temp = new Bullet(bulletGfx, 
+                        position.X + gfx.Width / 2, position.Y);
+                    bullets.Add(temp);
+                    //Sätt timeSinceLastBullet till detta ögonblick
+                    timeSinceLastBullet = gameTime.TotalGameTime.TotalMilliseconds;
+                }
+            }
+
+            //Flytta skotten
+            foreach(Bullet b in bullets.ToList())
+            {
+                b.Update();
+
+                if (!b.IsAlive)
+                {
+                    bullets.Remove(b);
+                }
+            }
         }
 
-       
+        public override void Draw(SpriteBatch spriteBatch)
+        {
+            spriteBatch.Draw(gfx, position, Color.White);
+            foreach (Bullet b in bullets)
+                b.Draw(spriteBatch);
+        }
+    }
 
+    class Bullet : PhysicalObject
+    {
+        public Bullet(Texture2D gfx, float X, float Y) 
+            : base(gfx, X, Y, 0, 3f)
+        {
+        }
+
+        public void Update()
+        {
+            position.Y -= speed.Y;
+            if (position.Y < 0)
+                IsAlive = false;
+        }
     }
 }

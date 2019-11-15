@@ -25,6 +25,7 @@ namespace SpaceShooter
         List<Enemy> enemies;
         List<GoldCoin> goldCoins;
         Texture2D goldCoinSprite;
+        int enemiesCount = 0;
 
         public Game1()
         {
@@ -56,18 +57,26 @@ namespace SpaceShooter
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
-            player = new Player(this.Content.Load<Texture2D>("Sprites/ship"), 380, 400, 2.5f, 4.5f);
+            player = new Player(this.Content.Load<Texture2D>("Sprites/ship"), 
+                380, 400, 2.5f, 4.5f, this.Content.Load<Texture2D>("Sprites/bullet"));
             printText = new PrintText(Content.Load<SpriteFont>("myFont"));
             goldCoinSprite = Content.Load<Texture2D>("Sprites/coin");
 
             //Skapa fiender
             enemies = new List<Enemy>();
+
+            CreateEnemies();
+        }
+
+        private void CreateEnemies()
+        {
+            enemiesCount++;
             Random random = new Random();
-            Texture2D tmpSprite= this.Content.Load<Texture2D>("Sprites/mine");
-            for (int i = 0; i < 10; i++)
+            Texture2D tmpSprite = this.Content.Load<Texture2D>("Sprites/mine");
+            for (int i = 0; i < enemiesCount; i++)
             {
                 int rndX = random.Next(0, Window.ClientBounds.Width - tmpSprite.Width);
-                int rndY = random.Next(0, Window.ClientBounds.Height/2);
+                int rndY = random.Next(0, Window.ClientBounds.Height / 2);
 
                 Mine temp = new Mine(tmpSprite, rndX, -rndY);
                 enemies.Add(temp);
@@ -75,7 +84,7 @@ namespace SpaceShooter
 
             //Tripoder
             tmpSprite = this.Content.Load<Texture2D>("Sprites/tripod");
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < enemiesCount; i++)
             {
                 int rndX = random.Next(0, Window.ClientBounds.Width - tmpSprite.Width);
                 int rndY = random.Next(0, Window.ClientBounds.Height / 2);
@@ -83,7 +92,6 @@ namespace SpaceShooter
                 Tripod temp = new Tripod(tmpSprite, rndX, -rndY);
                 enemies.Add(temp);
             }
-
         }
 
         /// <summary>
@@ -106,11 +114,22 @@ namespace SpaceShooter
                 Exit();
 
             // TODO: Add your update logic here
-            player.Update(Window);
+            player.Update(Window, gameTime);
 
             //Gå igenom alla fiender
             foreach (Enemy e in enemies.ToList())
             {
+                //Kontrollera om fienden kolliderar med ett skott
+                foreach(Bullet b in player.Bullets)
+                {
+                    if (e.CheckCollision(b))
+                    {
+                        e.IsAlive = false;  //Döda fienden
+                        b.IsAlive = false;  //Döda skottet
+                        player.Points++;    //Ge poäng till spelaren
+                    }
+                }
+
                 if (e.IsAlive)  //Kontrollera om fienden lever
                 {   //Kontrollera kollision med spelaren
                     if (e.CheckCollision(player))
@@ -155,6 +174,12 @@ namespace SpaceShooter
                     goldCoins.Remove(gc);
             }
 
+            // Skapa nya fiender ifall alla är döda
+            if (enemies.Count < 1)
+            {
+                CreateEnemies();
+            }
+
             base.Update(gameTime);
         }
 
@@ -164,10 +189,11 @@ namespace SpaceShooter
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
+
             GraphicsDevice.Clear(Color.Black);
 
             // TODO: Add your drawing code here
-            
+
             spriteBatch.Begin();
 
             //Rita guldmynt
@@ -184,7 +210,7 @@ namespace SpaceShooter
             // Rita texter
             // För att kunna skriva svenska tecken (åäöÅÄÖ) behöver man ändra lite i
             // XML-filen som hänger ihop med din font. Leta efter taggen <END>.
-            // Ändra där värdet till exempelvis 256.
+            // Ändra där värdet till exempelvis 255.
             printText.Print("Poäng:" + player.Points, spriteBatch, 0, 0);
             printText.Print("Antal fiender:" + enemies.Count, spriteBatch, 0, 20);
 

@@ -17,7 +17,7 @@ namespace SpaceShooter
             this.position.Y = Y;
         }
 
-        public void Draw(SpriteBatch spriteBatch)
+        public virtual void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(gfx, position, Color.White);
         }
