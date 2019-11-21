@@ -60,7 +60,7 @@ namespace SpaceShooter
             player = new Player(this.Content.Load<Texture2D>("Sprites/ship"), 
                 380, 400, 2.5f, 4.5f, this.Content.Load<Texture2D>("Sprites/bullet"));
             printText = new PrintText(Content.Load<SpriteFont>("myFont"));
-            goldCoinSprite = Content.Load<Texture2D>("coin");
+            goldCoinSprite = Content.Load<Texture2D>("Sprites/coin"); // 1. Felaktig sökväg till bilden. Lägg till mapp.
 
             //Skapa fiender
             enemies = new List<Enemy>();
@@ -82,7 +82,7 @@ namespace SpaceShooter
                 enemies.Add(temp);
             }
 
-            /*
+            //7. Koden för Tripoderna är bortkommenterad. Ta bort kommentarerna.
             //Tripoder
             tmpSprite = this.Content.Load<Texture2D>("Sprites/tripod");
             for (int i = 0; i < enemiesCount; i++)
@@ -91,9 +91,9 @@ namespace SpaceShooter
                 int rndY = random.Next(0, Window.ClientBounds.Height / 2);
 
                 Tripod temp = new Tripod(tmpSprite, rndX, -rndY);
-                enemies.Add(temp);
+                enemies.Add(temp); //7. När man tagit bort kommentarerna blir det ett fel här. Felet ligger dock inte här utan i klassen Tripod.
             }
-            */
+            
         }
 
         /// <summary>
@@ -213,11 +213,11 @@ namespace SpaceShooter
             printText.Print("Poäng:" + player.Points, spriteBatch, 0, 0);
             printText.Print("Antal fiender:" + enemies.Count, spriteBatch, 0, 20);
 
-            spriteBatch.End();
-
             //Rita guldmynt
             foreach (GoldCoin gc in goldCoins)
                 gc.Draw(spriteBatch);
+
+            spriteBatch.End();  //2. Spelet kraschar för att det försöker rita upp något utanför spriteBatch.Begin() och spriteBatch.End(). Flytta spritaBatch.End() så att den hamnar efter det sista Draw()-anropet.
 
             base.Draw(gameTime);
         }

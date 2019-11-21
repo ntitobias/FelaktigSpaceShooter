@@ -39,13 +39,13 @@ namespace SpaceShooter
         }
     }
 
-    class Tripod : PhysicalObject
+    class Tripod : Enemy   //7. Ändra arvet från PhysicalObject till Enemy för att få polymorfin att fungera.
     {
         public Tripod(Texture2D texture, float X, float Y) 
-            : base(texture, X, Y, 0f, 30f)
+            : base(texture, X, Y, 0f, 3f) //5. Ändra från 30f till exempelvis 3f för vettig hastighet. Detta fel upptäcks dock inte förrän fel 7 är åtgärdat.
         {
         }
-        public void Update(GameWindow window)
+        public override void Update(GameWindow window) //7. Lägg till override
         {
             //Flytta på fienden
             position.Y += speed.Y;

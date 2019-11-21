@@ -64,7 +64,7 @@ namespace SpaceShooter
                 position.Y = window.ClientBounds.Height - gfx.Height;
 
             //Spelaren vill skjuta
-            if (keyboardState.IsKeyDown(Keys.P))
+            if (keyboardState.IsKeyDown(Keys.Space)) //4. Ändra från P till Space, eller annan vettig tangent.
             {
                 //Kontrollera om spelaren får skjuta
                 if (gameTime.TotalGameTime.TotalMilliseconds > 
@@ -75,7 +75,7 @@ namespace SpaceShooter
                         position.X + gfx.Width / 2, position.Y);
                     bullets.Add(temp);
                     //Sätt timeSinceLastBullet till detta ögonblick
-                    timeSinceLastBullet = gameTime.TotalGameTime.Milliseconds;
+                    timeSinceLastBullet = gameTime.TotalGameTime.TotalMilliseconds; //3. Ändra från Milliseconds till TotalMilliseconds
                 }
             }
 
@@ -108,7 +108,7 @@ namespace SpaceShooter
 
         public void Update()
         {
-            position.Y += speed.Y;
+            position.Y -= speed.Y; //6. Ändra från + plus till - minus för att skotten ska röra sig uppåt.
             if (position.Y < 0)
                 IsAlive = false;
         }
